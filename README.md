@@ -1,0 +1,2 @@
+# Integrated-Healthcare-Management-System-for-Vulnerable-Populations
+Integrating IoT, machine learning, and blockchain into healthcare systems offers transformative solutions for vulnerable populations facing health disparities due to social determinants like economic stability and healthcare access. Our research focuses on developing an Integrated Healthcare Management System to deliver equitable, personalized care
