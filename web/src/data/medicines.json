@@ -1,0 +1,101 @@
+{
+    "Acetocillin": {
+        "Category": "Antidiabetic",
+        "Strength": "938 mg",
+        "Classification": "Over-the-Counter",
+        "Details": [
+        {
+            "Manufacturer": "Roche Holding AG",
+            "Indication": "Virus",
+            "Dosage Form": "Cream",
+            "image": "https://cdn.salla.sa/RBNnn/ebxeCV77OWG56XZDcMBLlQOirYqjyVbjObZHNOw3.png"
+        }
+        ],
+        "suitableFor": ["itching", "rashes", "skin irritation", "mild pain relief", "redness"]
+    },
+    "Ibuprocillin": {
+        "Category": "Antiviral",
+        "Strength": "337 mg",
+        "Classification": "Over-the-Counter",
+        "Details": [
+        {
+            "Manufacturer": "CSL Limited",
+            "Indication": "Infection",
+            "Dosage Form": "Injection",
+            "image": "https://d2ju9gzrocb29m.cloudfront.net/storage/products/March2020/ffejAwagbnOpT5vkcyrK.png"
+        }
+        ],
+        "suitableFor": ["severe infection", "high fever", "inflammation", "severe pain", "bacterial infection"]
+    },
+    "Dextrophen": {
+        "Category": "Antibiotic",
+        "Strength": "333 mg",
+        "Classification": "Prescription",
+        "Details": [
+        {
+            "Manufacturer": "Johnson & Johnson",
+            "Indication": "Wound",
+            "Dosage Form": "Ointment",
+            "image": "https://m.media-amazon.com/images/I/61Jx0zSpMgL.jpg"
+        }
+        ],
+        "suitableFor": ["wounds", "cuts", "minor skin infection", "abrasions", "pain relief for cuts"]
+    },
+    "Clarinazole": {
+      "Category": "Antifungal",
+      "Strength": "362 mg",
+      "Classification": "Prescription",
+      "Details": [
+        {
+          "Manufacturer": "AbbVie Inc.",
+          "Indication": "Pain",
+          "Dosage Form": "Syrup",
+          "image": "https://m.media-amazon.com/images/I/714IwIQ5t7L._AC_SL1500_.jpg"
+        }
+      ],
+      "suitableFor": ["cough", "throat pain", "inflammation", "sore throat", "chest congestion"]
+    },
+    "Amoxicillin": {
+      "Category": "Antifungal",
+      "Strength": "802 mg",
+      "Classification": "Over-the-Counter",
+      "Details": [
+        {
+          "Manufacturer": "Teva Pharmaceutical Industries Ltd.",
+          "Indication": "Wound",
+          "Dosage Form": "Tablet",
+          "image": "https://cdn.shopify.com/s/files/1/0996/0350/files/Amoxicillin-Capsules-500-mg-by-Teva-NDC-00093-3109-53.jpg?v=1722870189"
+        }
+      ],
+      "suitableFor": ["sinus infection", "ear infection", "mild infection", "respiratory issues", "fever"]
+    },
+    "Ibupromycin": {
+      "Category": "Antibiotic",
+      "Strength": "140 mg",
+      "Classification": "Prescription",
+      "Details": [
+        {
+          "Manufacturer": "Takeda Pharmaceutical Company Limited",
+          "Indication": "Infection",
+          "Dosage Form": "Injection",
+          "image": "https://assets-dam.takeda.com/image/upload/v1/legacy-dotcom/globalassets/corporate/takeda_logo.png"
+        }
+      ],
+      "suitableFor": ["serious infection", "severe inflammation", "pain relief", "skin infection", "swelling"]
+    },
+    "Metovir": {
+      "Category": "Antipyretic",
+      "Strength": "641 mg",
+      "Classification": "Over-the-Counter",
+      "Details": [
+        {
+          "Manufacturer": "Takeda Pharmaceutical Company Limited",
+          "Indication": "Infection",
+          "Dosage Form": "Ointment"
+        }
+      ],
+      "suitableFor": ["infections", "rash", "soothing skin", "pain relief", "minor burns"]
+    }
+    
+
+}
