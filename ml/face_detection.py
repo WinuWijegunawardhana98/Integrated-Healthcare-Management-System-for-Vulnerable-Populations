@@ -6,6 +6,7 @@ import math
 
 def face_confidence(face_distance, face_match_threshold=0.6):
     range = (1.0 - face_match_threshold)
+
     linear_val = (1.0 - face_distance) / (range * 2.0)
 
     if face_distance > face_match_threshold:
@@ -27,12 +28,13 @@ class FaceRecognition:
         self.encode_faces()
 
     def encode_faces(self):
+        """Loads and encodes known faces from the 'uploads' directory."""
         for image in os.listdir('uploads'):
             try:
                 face_image = face_recognition.load_image_file(f'uploads/{image}')
                 face_encodings = face_recognition.face_encodings(face_image)
 
-                if face_encodings:  # Check if the list is not empty
+                if face_encodings:  # Ensure there's at least one face
                     self.known_face_encodings.append(face_encodings[0])
                     self.known_face_names.append(image)
                 else:
@@ -42,6 +44,7 @@ class FaceRecognition:
                 print(f"Error processing image {image}: {e}")
 
     def run_recognition(self, input_username):
+        """Runs real-time face recognition and checks for a match with input_username."""
         video_capture = cv2.VideoCapture(0)
         if not video_capture.isOpened():
             raise Exception("Video source not found")
@@ -50,6 +53,10 @@ class FaceRecognition:
 
         while True:
             ret, frame = video_capture.read()
+            if not ret:
+                print("Failed to capture frame from video source.")
+                break
+
             if self.process_current_frame:
                 small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
                 rgb_small_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)
@@ -65,19 +72,29 @@ class FaceRecognition:
                     confidence = 'Unknown'
 
                     face_distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
-                    best_match_index = np.argmin(face_distances)
+                    
+                    if len(face_distances) > 0:
+                        best_match_index = np.argmin(face_distances)
 
-                    if matches[best_match_index]:
-                        name = self.known_face_names[best_match_index]
-                        confidence = face_confidence(face_distances[best_match_index])
+                        if matches[best_match_index]:
+                            name = self.known_face_names[best_match_index]
+                            confidence = face_confidence(face_distances[best_match_index])
 
                     # Extract the base name (without extension) for comparison
                     recognized_name = os.path.splitext(name)[0]
                     self.face_names.append(f'{recognized_name} ({confidence})')
-                    print(recognized_name+'---'+input_username)
+                    print(f"{recognized_name} --- {input_username}")
+
+                    # Ensure confidence is numeric before conversion
+                    if confidence != 'Unknown':
+                        try:
+                            confidence_value = float(confidence.strip('%'))
+                        except ValueError:
+                            confidence_value = 0  # Default value in case of parsing errors
+                    else:
+                        confidence_value = 0  # Assign 0 if unknown
 
                     # Compare with the input username
-                    confidence_value = float(confidence.strip('%'))
                     if recognized_name == input_username and confidence_value > 98:
                         detected = True
                         break  # Exit the loop if a match is found
