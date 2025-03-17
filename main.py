@@ -21,7 +21,11 @@ import easyocr
 import pytesseract
 from PIL import Image
 import numpy as np
+from sklearn.preprocessing import StandardScaler, FunctionTransformer
+from sklearn.neighbors import NearestNeighbors
+from sklearn.pipeline import Pipeline
 import re
+import random
 import traceback
 
 app = FastAPI()
@@ -288,6 +292,8 @@ class PersonalHealth(BaseModel):
     diabetes: bool = False
     blood_pressure: str = "120/80"
     bmi: Optional[float] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
     allergies: Optional[str] = None
     last_checkup: Optional[datetime] = None
     age: Optional[int] = 20  
@@ -915,6 +921,7 @@ class Activity(BaseModel):
 # Define the ExerciseSchedule model
 class ExerciseSchedule(BaseModel):
     date: Optional[str] = None
+    end_date: Optional[str] = None
     activities: List[Activity]
     user: str
     title: str
@@ -929,6 +936,7 @@ async def create_schedule(schedule: ExerciseSchedule):
     # Create a new document in Firestore
     schedule_ref = db.collection(EXERCISE_SCHEDULES_COLLECTION).add({
         "date": schedule.date,
+        "end_date": schedule.end_date,
         "activities": [activity.dict() for activity in schedule.activities],
         "user": schedule.user,
         "title": schedule.title
@@ -1019,6 +1027,99 @@ async def delete_schedule_by_title(title: str):
         schedule_ref.delete()
     
     return {"message": "Schedule(s) deleted successfully"}
+
+
+# Diet Suggetions 
+class RecommendationRequest(BaseModel):
+    max_daily_fat: float
+    max_nutritional_values: Dict[str, float]
+    ingredient_filter: Optional[List[str]] = None
+
+# Processed Dataset
+try:
+    dataset = pd.read_csv('diets/dataset.csv') 
+except Exception as e:
+    raise RuntimeError(f"Failed to load dataset: {str(e)}")
+
+def scaling(dataframe):
+    scaler = StandardScaler()
+    prep_data = scaler.fit_transform(dataframe.iloc[:, 6:15].to_numpy())
+    return prep_data, scaler
+
+def nn_predictor(prep_data):
+    neigh = NearestNeighbors(metric='cosine', algorithm='brute')
+    neigh.fit(prep_data)
+    return neigh
+
+def build_pipeline(neigh, scaler, params):
+    transformer = FunctionTransformer(neigh.kneighbors, kw_args=params)
+    pipeline = Pipeline([('std_scaler', scaler), ('NN', transformer)])
+    return pipeline
+
+def extract_data(dataframe, ingredient_filter, max_nutritional_values):
+    extracted_data = dataframe.copy()
+    for column, maximum in zip(extracted_data.columns[6:15], max_nutritional_values.values()):
+        extracted_data = extracted_data[extracted_data[column] < maximum]
+    if ingredient_filter is not None:
+        for ingredient in ingredient_filter:
+            extracted_data = extracted_data[extracted_data['RecipeIngredientParts'].str.contains(ingredient, regex=False)]
+    return extracted_data
+
+def apply_pipeline(pipeline, _input, extracted_data):
+    return extracted_data.iloc[pipeline.transform(_input)[0]]
+
+def recommand(dataframe, _input, max_nutritional_values, ingredient_filter=None, params={'return_distance': False}):
+    extracted_data = extract_data(dataframe, ingredient_filter, max_nutritional_values)
+    prep_data, scaler = scaling(extracted_data)
+    neigh = nn_predictor(prep_data)
+    pipeline = build_pipeline(neigh, scaler, params)
+    return apply_pipeline(pipeline, _input, extracted_data)
+
+
+# API endpoint
+@app.post("/recommend_recipe")
+async def recommend_recipe(request: RecommendationRequest):
+    try:
+        # Extract parameters from request
+        max_daily_fat = request.max_daily_fat
+        max_nutritional_values = request.max_nutritional_values
+        ingredient_filter = request.ingredient_filter
+
+        # Prepare input vector
+        test_input = np.array([[0] * 9])  # Assuming the input shape is (1, 9) for nutritional features
+        test_input[0, 1] = max_daily_fat  # Set the daily fat in the input
+
+        # Generate a recommendation
+        recommended_recipes = recommand(
+            dataframe=dataset,
+            _input=test_input,
+            max_nutritional_values=max_nutritional_values,
+            ingredient_filter=ingredient_filter
+        )
+
+        # Drop unnecessary columns
+        recommended_recipes = recommended_recipes.drop(
+            columns=["RecipeId", "CookTime", "PrepTime", "TotalTime"], errors="ignore"
+        )
+
+        # Convert to list of dictionaries
+        recipes_list = recommended_recipes.to_dict(orient="records")
+
+        # Shuffle the list to get random selections
+        random.shuffle(recipes_list)
+
+        # Select one recipe each for breakfast, lunch, and dinner
+        response = {
+            "breakfast": recipes_list[0] if len(recipes_list) > 0 else None,
+            "lunch": recipes_list[1] if len(recipes_list) > 1 else None,
+            "dinner": recipes_list[2] if len(recipes_list) > 2 else None,
+        }
+
+        return response
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating recipe recommendation: {str(e)}")
+
 
 # Drug Addherence 
 @app.post("/prescription/create")
@@ -1220,4 +1321,51 @@ def predict(data: PatientIOTData):
     return {
         "prediction": prediction,
         "confidence": confidence  # You can remove this if it's not applicable in regression
+    }
+
+
+# Predict Heard condition (High Accurate)
+HEART_ACC_MODEL = joblib.load("random_forest_heart_risk_model.joblib")
+
+class PatientData(BaseModel):
+    age: int
+    bmi: float
+    resting_bp: int
+    spo2: float
+    ecg: float
+
+# Prediction function
+def predict_heart_attack_risk(data: PatientData):
+    """
+    Predicts whether a patient is at risk of a heart attack (1 = High Risk, 0 = Low Risk).
+    Also returns the confidence score of the prediction.
+    
+    Parameters:
+        data (PatientData): Patient details with Age, BMI, RestingBP, Spo2, ECG.
+
+    Returns:
+        tuple: (risk, confidence) - where risk is 1 or 0, and confidence is the probability of the prediction.
+    """
+    # Convert input data to numpy array
+    input_data = np.array([[data.age, data.bmi, data.resting_bp, data.spo2, data.ecg]])
+
+    # Make prediction and get confidence score (probability)
+    prediction = HEART_ACC_MODEL.predict(input_data)  # 0 or 1 (risk)
+    confidence = HEART_ACC_MODEL.predict_proba(input_data)  # Get class probabilities
+
+    # Get the probability of the "High Risk" class (class 1)
+    risk_confidence = confidence[0][1]  # Confidence of "High Risk" (1)
+
+    return int(prediction[0]), risk_confidence
+
+# API endpoint for prediction
+@app.post("/predict-heart-heart-risk2")
+async def predict_risk(patient: PatientData):
+    """
+    API Endpoint: Predicts heart attack risk based on input parameters.
+    """
+    risk, confidence = predict_heart_attack_risk(patient)
+    return {
+        "heart_attack_risk": "High" if risk == 1 else "Low",
+        "confidence_rate": round(confidence * 100, 2)  # Return confidence as a percentage
     }
