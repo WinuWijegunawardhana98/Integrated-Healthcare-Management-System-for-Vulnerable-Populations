@@ -12,4 +12,5 @@ matplotlib
 numpy
 
 # System Diagram
-![full system diagram](https://github.com/user-attachments/assets/17f6d12b-5ef0-4f1a-974a-655ef83e7eab)
+
+![WhatsApp Image 2025-03-17 at 23 33 48_5e097a5b](https://github.com/user-attachments/assets/4a8f1f7e-eab8-4a10-ae45-6cb0cb1b0e0f)
