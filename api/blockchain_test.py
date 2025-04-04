@@ -107,4 +107,3 @@ def log_action(username: str, action: str):
         "timestamp": datetime.utcnow()
     }
     db.collection("logs").add(log_data)
-
