@@ -118,4 +118,3 @@ def log_action(username: str, action: str):
         "timestamp": datetime.utcnow().isoformat()
     }
     db.child("logs").push(log_data)
-
