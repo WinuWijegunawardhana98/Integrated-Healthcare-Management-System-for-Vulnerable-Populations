@@ -1,0 +1,1280 @@
+/* =========== Google Fonts ============ */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+/* =============== Globals ============== */
+* {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+Link {
+  font-style: normal;
+  text-decoration: none;
+}
+
+:root {
+  --blue: #2a2185;
+  --white: #fff;
+  --gray: #f5f5f5;
+  --black1: #222;
+  --black2: #999;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: all 0.7s ease-in-out;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+/* =================== FOnts ================= */
+.sub-topic {
+  color: var(--blue);
+  font-size: 1.8rem;
+  margin-bottom: 2px;
+}
+
+/* =============== Navigation ================ */
+.navigation {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  background: var(--blue);
+  border-left: 10px solid var(--blue);
+  transition: 0.5s;
+  overflow: hidden;
+}
+.navigation.active {
+  width: 80px;
+}
+
+.navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navigation ul li {
+  
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.navigation ul li:hover,
+.navigation ul li.hovered {
+  background-color: var(--white);
+}
+
+.navigation ul li:nth-child(1) {
+  margin-bottom: 40px;
+  pointer-events: none;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--white);
+}
+.navigation ul li:hover a,
+.navigation ul li.hovered a {
+  color: var(--blue);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 75px;
+  text-align: center;
+}
+.navigation ul li a .icon .ic {
+  font-size: 1.5rem;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  text-align: start;
+  white-space: nowrap;
+}
+
+/* --------- curve outside ---------- */
+.navigation ul li:hover a::before,
+.navigation ul li.hovered a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px var(--white);
+  pointer-events: none;
+}
+.navigation ul li:hover a::after,
+.navigation ul li.hovered a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px var(--white);
+  pointer-events: none;
+}
+
+/* ===================== Main ===================== */
+.main {
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  min-height: 100vh;
+  background: var(--white);
+  transition: 0.5s;
+}
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.search {
+  position: relative;
+  width: 400px;
+  margin: 0 10px;
+}
+
+.search label {
+  position: relative;
+  width: 100%;
+}
+
+.search label input {
+  width: 100%;
+  height: 40px;
+  border-radius: 40px;
+  padding: 5px 20px;
+  padding-left: 35px;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid var(--black2);
+}
+
+.search label ion-icon {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  font-size: 1.2rem;
+}
+
+.user {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ======================= Cards ====================== */
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 30px;
+}
+
+.cardBox .card {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardBox .card .numbers {
+  position: relative;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--blue);
+}
+
+.cardBox .card .cardName {
+  color: var(--black2);
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.cardBox .card .iconBx {
+  font-size: 3.5rem;
+  color: var(--black2);
+}
+
+.cardBox .card:hover {
+  background: var(--blue);
+}
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName,
+.cardBox .card:hover .iconBx {
+  color: var(--white);
+}
+
+/* ================== Order Details List ============== */
+.details {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 30px;
+  /* margin-top: 10px; */
+}
+
+.details .recentOrders {
+  position: relative;
+  /* display: grid; */
+  min-height: 500px;
+  max-width: 55vw;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.details .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.cardHeader h2 {
+  font-weight: 600;
+  color: var(--blue);
+}
+.cardHeader .btn {
+  position: relative;
+  padding: 5px 10px;
+  background: var(--blue);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+}
+
+.details table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.details table thead td {
+  font-weight: 600;
+}
+.details .recentOrders table tr {
+  color: var(--black1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.details .recentOrders table tr:last-child {
+  border-bottom: none;
+}
+.details .recentOrders table tbody tr:hover {
+  background: var(--blue);
+  color: var(--white);
+}
+.details .recentOrders table tr td {
+  padding: 10px;
+}
+.details .recentOrders table tr td:last-child {
+  text-align: end;
+}
+.details .recentOrders table tr td:nth-child(2) {
+  text-align: end;
+}
+.details .recentOrders table tr td:nth-child(3) {
+  text-align: center;
+}
+.status.delivered {
+  padding: 2px 4px;
+  background: #8de02c;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.status.pending {
+  padding: 2px 4px;
+  background: #e9b10a;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.status.return {
+  padding: 2px 4px;
+  background: #f00;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.status.inProgress {
+  padding: 2px 4px;
+  background: #1795ce;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.recentCustomers {
+  position: relative;
+  /* display: grid; */
+  min-height: 500px;
+  max-width: 25vw;
+  padding: 20px;
+  background: var(--white);
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+.recentCustomers .imgBx {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  overflow: hidden;
+}
+.recentCustomers .imgBx img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.recentCustomers table tr td {
+  padding: 12px 10px;
+}
+.recentCustomers table tr td h4 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2rem;
+}
+.recentCustomers table tr td h4 span {
+  font-size: 14px;
+  color: var(--black2);
+}
+.recentCustomers table tr:hover {
+  background: var(--blue);
+  color: var(--white);
+}
+.recentCustomers table tr:hover td h4 span {
+  color: var(--white);
+}
+
+/* ====================== Responsive Design ========================== */
+@media (max-width: 991px) {
+  .navigation {
+    left: -300px;
+  }
+  .navigation.active {
+    width: 300px;
+    left: 0;
+  }
+  .main {
+    width: 100%;
+    left: 0;
+  }
+  .main.active {
+    left: 300px;
+  }
+  .cardBox {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+  .recentOrders {
+    overflow-x: auto;
+  }
+  .status.inProgress {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardBox {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .cardHeader h2 {
+    font-size: 20px;
+  }
+  .user {
+    min-width: 40px;
+  }
+  .navigation {
+    width: 100%;
+    left: -100%;
+    z-index: 1000;
+  }
+  .navigation.active {
+    width: 100%;
+    left: 0;
+  }
+  .toggle {
+    z-index: 10001;
+  }
+  .main.active .toggle {
+    color: #fff;
+    position: fixed;
+    right: 0;
+    left: initial;
+  }
+}
+
+/* Home Page */
+
+/* Main Home Container */
+.home-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Main Section (60% width) */
+.main-section {
+  width: 75%;
+  background-color: var(--blue);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+/* Content Section (Text and Button) */
+.content {
+  max-width: 50%;
+}
+
+.content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.content p {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+
+.join-button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: var(--white);
+  color: var(--blue);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.join-button:hover {
+  background-color: var(--gray);
+  color: var(--black1);
+}
+
+/* Image Section */
+.image-section {
+  position: relative;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-section img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  opacity: 0.7;
+  transition: opacity 0.5s ease;
+}
+
+.image-section img:hover {
+  opacity: 1;
+}
+
+/* Services Section (40% width) */
+.services-section {
+  width: 25%;
+  background-color: var(--gray);
+  padding: 40px;
+  padding-right: 0;
+  
+  box-sizing: border-box;
+}
+
+/* Service Card */
+.container-hover {
+  max-height: 90%; /* Fixed height for scrollable area */
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  /* animation: scrollUpDown 8s ease-in-out infinite alternate; */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--blue) var(--gray); /* Firefox */
+}
+
+/* Scrollbar Track */
+.container-hover::-webkit-scrollbar {
+  width: 10px; /* Width of scrollbar */
+}
+
+.container-hover::-webkit-scrollbar-track {
+  background: var(--gray); /* Light gray track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+/* Scrollbar Thumb */
+.container-hover::-webkit-scrollbar-thumb {
+  background-color: var(--blue); /* Blue thumb color */
+  border-radius: 10px; /* Rounded corners for the thumb */
+  border: 2px solid var(--gray); /* Creates space around the thumb */
+}
+
+/* Hover effect for the thumb */
+.container-hover::-webkit-scrollbar-thumb:hover {
+  background-color: #1b165e; /* Darker blue when hovered */
+}
+
+.services-card {
+  background: var(--white);
+  border: 1px solid var(--blue);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.services-card:hover {
+  transform: scale(1.05);
+}
+
+.services-card img {
+  max-width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Auto-scroll animation */
+/* @keyframes scrollUpDown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+} */
+
+.container-hover:hover {
+  animation-play-state: paused; /* Pause animation on hover */
+  overflow-y: auto; /* Allow manual scrolling on hover */
+}
+
+.services-card h2 {
+  color: var(--blue);
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.services-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.services-card li {
+  font-size: 1.1rem;
+  color: var(--black1);
+  margin-bottom: 10px;
+}
+
+.services-card li::before {
+  content: '•';
+  color: var(--blue);
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.services-card img {
+  width: 100%;
+  background-size: contain;
+  margin-bottom: 5px;
+}
+
+.custom-hr {
+  border: 0;
+  height: 8px; /* Set the maximum thickness for the middle part */
+  background: linear-gradient(
+    to right,
+    rgba(42, 33, 133, 0.8), /* Middle color with desired thickness */
+    transparent         /* Right thin edge */
+  );
+  border-radius: 4px; /* Rounds the edges for a smooth transition */
+  width: 100%; /* Full width */
+  margin: 5px 0; /* Adjust spacing around the <hr> */
+}
+
+/* Top Nav */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  color: var(--white);
+  z-index: 10;
+}
+
+.company-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-items a {
+  color: var(--white);
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-items a:hover {
+  color: var(--gray);
+}
+
+.ct-content {
+  padding: 20px;
+}
+
+.cautionList {
+  list-style-type: none; /* Remove default bullets */
+  padding-left: 0;
+}
+
+.cautionItem {
+  position: relative;
+  margin-bottom: 1em;
+  padding-left: 30px; /* Space for custom bullet */
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.cautionItem::before {
+  content: "⚠️"; /* Custom icon (can also use • or ✓) */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #e63946; /* Caution red color */
+  font-size: 1.2rem;
+}
+
+.cautionText {
+  color: #555;
+}
+
+.detailsForm {
+  max-width: 400px;
+  margin: 2em auto;
+  padding: 1.5em;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.recentOrders form {
+  display: flex;
+  flex-direction: column;
+}
+
+.recentOrders label {
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+  color: #555;
+}
+
+.recentOrders textarea {
+  padding: 0.8em;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 1em;
+  transition: border-color 0.3s;
+}
+
+.recentOrders textarea:focus {
+  border-color: #0066cc;
+  outline: none;
+}
+
+.recentOrders .btn {
+  background-color: #0066cc;
+  color: #fff;
+  padding: 0.8em;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.recentOrders .btn:hover {
+  background-color: #005bb5;
+}
+
+.medicationDetails {
+  margin-top: 1.5em;
+  padding: 1em;
+  background-color: #e6f7ff;
+  border-radius: 4px;
+  color: #333;
+}
+
+.medicationDetails h3 {
+  font-size: 1.2rem;
+  color: #0066cc;
+  margin-bottom: 0.5em;
+}
+
+.medicationDetails p {
+  margin: 0.3em 0;
+  font-size: 1rem;
+}
+
+.card {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 20px;
+  align-items: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-content h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.card-content p {
+  margin: 4px 0;
+}
+
+
+.exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.exercise-card {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.exercise-card > div:nth-child(1) {
+  width: 15%; /* First child - 30% width */
+}
+
+.exercise-card > div:nth-child(2) {
+  width: 10%; /* Second child - 50% width */
+}
+
+.exercise-card > div:nth-child(3) {
+  width: 25%; /* Third child - 20% width */
+}
+
+
+.exercise-card:hover {
+  transform: scale(1.02);
+}
+
+.exercise-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+
+.exercise-details {
+  flex-grow: 1;
+}
+
+.exercise-details h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.exercise-details p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.exercise-action {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.exercise-action .start-exercise-btn {
+  padding: 0.5rem 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.exercise-action .start-exercise-btn:hover {
+  background-color: #45a049;
+}
+
+/* Prescription Form */
+.prescription-container {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.card-header h2 {
+  margin-bottom: 20px;
+}
+
+.form-content .form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.add-button,
+.submit-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-button:hover,
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+.medicine-list {
+  list-style: none;
+  padding: 0;
+}
+
+.medicine-item {
+  background: #eef;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 4px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.close-button {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #e53935;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.checkbox-item {
+  margin-right: 10px;
+}
+
+.prescription-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+.prescription-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Prescription Details */
+.prescription-details h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #2c3e50;
+}
+
+.prescription-details p {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #666;
+}
+
+.prescription-details small {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* Medications List */
+.prescription-medications h4 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #2980b9;
+}
+
+.prescription-medications ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.prescription-medications li {
+  font-size: 1rem;
+  margin-bottom: 5px;
+  color: #34495e;
+  background-color: #a7a7a7;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+/* Error and Loading Styles */
+.error {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.loading {
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+.medication-card {
+  background-color: #005bb5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.medication-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+/* .medication-icon .ico {
+  scale: ;
+} */
+
+.medication-details {
+  flex-grow: 1;
+  flex: 3;
+}
+
+.medication-timing {
+  text-align: right;
+  flex: 2;
+}
+
+.card-content-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.frequency-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.frequency-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  justify-content: center;
+}
+
+.frequency-toggle:hover {
+  background-color: #e8f5e9;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.frequency-toggle input[type="checkbox"] {
+  accent-color: #5cb85c;
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+}
+
+.frequency-toggle label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.prepare-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 20px 0;
+}
+
+.prepare-info {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.start-exercise-btn {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #007bff;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.start-exercise-btn:hover {
+  background-color: #0056b3;
+}
+
+/* .form-card {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  margin: 20px 0;
+} */
+
+.prediction-result {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #e0ffe0;
+  border: 1px solid #4caf50;
+  border-radius: 5px;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.error-message {
+  color: #ff4d4d;
+  margin-top: 10px;
+}
+
+.speedometer {
+  position: relative;
+  width: 200px;
+  height: 120px;
+  margin: auto;
+}
+
+.gauge {
+  transition: stroke-dashoffset 0.5s ease-out;
+}
+
+.calorie {
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.nutrition-section {
+  text-align: center;
+  padding: 20px;
+}
+
+.meal-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 5px;
+  flex-wrap: nowrap;
+}
+
+.meal-card {
+  /* width: 300px; */
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.meal-image {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.meal-item {
+  text-align: left;
+}
+
+
+
