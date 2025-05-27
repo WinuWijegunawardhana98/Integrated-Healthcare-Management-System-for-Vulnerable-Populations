@@ -31,7 +31,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     // References for each health data
-    const bpmRef = ref(db, 'BP:');
+    const bpmRef = ref(db, 'BPM:');
     const fahrenheitRef = ref(db, 'Farenheit:');
     const spo2Ref = ref(db, 'spo2:');
     const beatAvgRef = ref(db, 'beatAvg:');
