@@ -7,8 +7,14 @@ import PersonalHeartRate from '../components/PersonalHeartRate';
 import { db } from '../data/Firebase';
 import { ref, onValue } from "firebase/database";
 import PersonalPredictions from '../components/PersonalPredictions';
+import ImageCard from '../components/ImageCard';
 
 const Dashboard = () => {
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : {};
+  });
+  
   const [healthData, setHealthData] = useState({
     bpm: 0,
     fahrenheit: 0,
@@ -21,6 +27,8 @@ const Dashboard = () => {
     longitude: 0,
   });
 
+  const [riskStatus, setRiskStatus] = useState(null); // 'risk', 'not risk', or null for loading/unknown
+
   useEffect(() => {
     // References for each health data
     const bpmRef = ref(db, 'BPM:');
@@ -30,8 +38,7 @@ const Dashboard = () => {
     const tanceRef = ref(db, 'tance:');
     const degreeCRef = ref(db, 'DegreeC:'); 
     const ecgCRef = ref(db, 'ecg:'); 
-    const latitudeRef = ref(db, 'location/latitude:');
-    const longitudeRef = ref(db, 'location/longitude:');
+    const locationRef = ref(db, 'location');
 
     const intervalId = setInterval(() => {
       // Fetch bpm value
@@ -57,7 +64,7 @@ const Dashboard = () => {
       onValue(fahrenheitRef, (snapshot) => {
         if (snapshot.exists()) {
           const fahrenheitValue = snapshot.val();
-          const roundedFahrenheit = parseFloat(fahrenheitValue).toFixed(2); // Round to 2 decimal points
+          const roundedFahrenheit = parseFloat(fahrenheitValue).toFixed(2);
           setHealthData((prevState) => ({
             ...prevState,
             fahrenheit: roundedFahrenheit,
@@ -101,32 +108,24 @@ const Dashboard = () => {
           const degreeCValue = snapshot.val();
           setHealthData((prevState) => ({
             ...prevState,
-            degreeC: parseFloat(degreeCValue).toFixed(2), // Round to 2 decimal points
+            degreeC: parseFloat(degreeCValue).toFixed(2),
           }));
-        }
-      });
-      onValue(latitudeRef, (snapshot) => {
-        if (snapshot.exists()) {
-          setHealthData((prevState) => ({
-            ...prevState,
-            latitude: snapshot.val(),
-          }));
-          
         }
       });
 
-      onValue(longitudeRef, (snapshot) => {
+      onValue(locationRef, (snapshot) => {
         if (snapshot.exists()) {
+          const locationData = snapshot.val(); 
           setHealthData((prevState) => ({
             ...prevState,
-            longitude: snapshot.val(),
+            latitude: locationData['latitude:'],
+            longitude: locationData['longitude:'],
           }));
-          
         }
       });
-    }, 1000); // Fetch data every 1 second
+      
+    }, 1000);
 
-    // Cleanup interval when the component is unmounted
     return () => clearInterval(intervalId);
   }, []);
 
@@ -136,16 +135,41 @@ const Dashboard = () => {
       <div className="main">
         <Topbar />
         <div className="cardBox">
-          {/* <Card numbers={`${healthData.bpm} bpm`} cardName="Heart Rate" icon="heart-outline" /> */}
           <Card numbers={`${healthData.fahrenheit}°F`} cardName="Body Temperature" icon="thermometer-outline" />
           <Card numbers={`${healthData.spo2}%`} cardName="Oxygen Level" icon="pulse-outline" />
-          <Card numbers={`${healthData.beatAvg} bpm`} cardName="Avg Heart Rate" icon="speedometer-outline" />
-          <Card numbers={`${healthData.tance}`} cardName="Tance" icon="trending-up-outline" />
+          <Card numbers={`${healthData.bpm} bpm`} cardName="Avg Heart Rate" icon="speedometer-outline" />
+          <ImageCard 
+            cardName={
+              riskStatus === 'risk' ? 'High Heart Risk' : 
+              riskStatus === 'not risk' ? 'Low Heart Risk' : 
+              'Heart Risk Loading'
+            } 
+            imageUrl={
+              riskStatus === 'risk' ? `${process.env.PUBLIC_URL}/anim/red-heart.png` :
+              riskStatus === 'not risk' ? `${process.env.PUBLIC_URL}/anim/green-heart.png` :
+              `${process.env.PUBLIC_URL}/anim/grey-heart.png`
+            } 
+            icon="trending-up-outline" 
+          />
         </div>
         <div className="details">
           <PersonalHeartRate />
-          {/* Pass bpm, beatAvg, and degreeC to PersonalPredictions component */}
-          <PersonalPredictions ecg={healthData.ecg} spo2={healthData.spo2} bpm={healthData.bpm} beatAvg={healthData.beatAvg} degreeC={healthData.degreeC} lat={healthData.latitude} lng={healthData.longitude} />
+          <PersonalPredictions 
+            ecg={healthData.ecg} 
+            spo2={healthData.spo2} 
+            bpm={healthData.bpm} 
+            beatAvg={healthData.beatAvg} 
+            degreeC={healthData.degreeC} 
+            lat={healthData.latitude} 
+            lng={healthData.longitude} 
+            onRiskChange={(risk) => {
+              // Normalize the risk value to our expected strings
+              const normalizedRisk = 
+                risk && risk.toLowerCase().includes('not') ? 'not risk' : 
+                'risk';
+              setRiskStatus(normalizedRisk);
+            }}
+          />
         </div>
         <Footer />
       </div>
